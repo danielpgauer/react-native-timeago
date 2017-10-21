@@ -1,51 +1,40 @@
-var React = require('react')
-var ReactNative = require('react-native');
-var moment = require('moment');
-var TimerMixin = require('react-timer-mixin');
+import React from 'react';
+import {
+  Text
+} from 'react-native';
+import moment from 'moment';
+import PropTypes from 'prop-types';
 
-var { PropTypes } = React;
-var { Text } = ReactNative;
 
-var TimeAgo = React.createClass({
-  mixins: [TimerMixin],
-  propTypes: {
-    time: React.PropTypes.oneOfType([
-      React.PropTypes.string,
-      React.PropTypes.number,
-      React.PropTypes.array,
-      React.PropTypes.instanceOf(Date)
+export default class TimeAgo extends React.Component {
+  static propTypes = {
+    time: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+      PropTypes.array,
+      PropTypes.instanceOf(Date)
     ]).isRequired,
     interval: PropTypes.number,
     hideAgo: PropTypes.bool
-  },
+  }
 
-  getDefaultProps() {
-    return {
-      hideAgo: false,
-      interval: 60000
-    }
-  },
+  static defaultProps = {
+    hideAgo: false,
+    interval: 60000
+  }
 
   componentDidMount() {
     var {interval} = this.props;
-    this.setInterval(this.update, interval);
-  },
+    this.updateInterval = setInterval(this.forceUpdate, interval);
+  }
 
   componentWillUnmount() {
-    this.clearInterval(this.update);
-  },
-
-  // We're using this method because of a weird bug
-  // where autobinding doesn't seem to work w/ straight this.forceUpdate
-  update() {
-    this.forceUpdate();
-  },
+    clearInterval(this.updateInterval);
+  }
 
   render() {
     return (
-      <Text {...this.props}>{moment(this.props.time).fromNow(this.props.hideAgo)}</Text>
-    );
+      <Text {...this.props}>{this.props.time ? moment(this.props.time).fromNow(this.props.hideAgo) : ''}</Text>
+    )
   }
-});
-
-module.exports = TimeAgo;
+}
