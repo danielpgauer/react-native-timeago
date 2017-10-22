@@ -14,7 +14,8 @@
   ],
   "peerDependencies": {
     "moment": "2.x.x",
-	"prop-types": "^15.5.10",
+    "prop-types": "^15.5.10",
+    "react-mixin": "^4.0.0",
     "react-timer-mixin": "*",
     "react-native": "*",
     "react": ">=0.14.0"

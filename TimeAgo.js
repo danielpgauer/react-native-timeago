@@ -4,6 +4,8 @@ import {
 } from 'react-native';
 import moment from 'moment';
 import PropTypes from 'prop-types';
+import reactMixin from 'react-mixin';
+import TimerMixin from 'react-timer-mixin';
 
 
 export default class TimeAgo extends React.Component {
@@ -25,11 +27,11 @@ export default class TimeAgo extends React.Component {
 
   componentDidMount() {
     var {interval} = this.props;
-    this.updateInterval = setInterval(this.forceUpdate, interval);
+    this.updateInterval = this.setInterval(() => this.forceUpdate(), interval);
   }
 
   componentWillUnmount() {
-    clearInterval(this.updateInterval);
+    this.clearInterval(this.updateInterval);
   }
 
   render() {
@@ -38,3 +40,5 @@ export default class TimeAgo extends React.Component {
     )
   }
 }
+
+reactMixin(TimeAgo.prototype, TimerMixin)
